@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests Hebdomadaires - École</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8A2BE2;
+            --primary-light: #9B4DFF;
+            --primary-dark: #6A1B9A;
+            --secondary: #E1BEE7;
+            --text: #333;
+            --light: #F3E5F5;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: var(--text);
+            min-height: 100vh;
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-height: calc(100vh - 30px);
+        }
+
+        header {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary));
+            color: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            background-color: var(--primary-light);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        .main-content {
+            padding: 30px 20px;
+            text-align: center;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .welcome-message {
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .welcome-message h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .form-container {
+            background-color: var(--light);
+            padding: 25px;
+            border-radius: var(--radius);
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            width: 90%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .teacher-panel {
+            padding: 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--secondary);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .question-item, .result-item {
+            background-color: var(--white);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .question {
+            background-color: var(--white);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: left;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option.selected {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .result-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .result-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Tests Hebdomadaires MIFTAHALILM</span>
+            </div>
+            <button id="teacherBtn" class="btn">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Professeur</span>
+            </button>
+        </header>
+
+        <div class="main-content" id="mainScreen">
+            <div class="welcome-message">
+                <h1>Bienvenue sur la Plateforme des Tests Hebdomadaires école MIFTAHALILM</h1>
+                <p>Choisissez votre niveau et entrez vos informations pour commencer le test</p>
+            </div>
+            <button id="startQuizBtn" class="btn start-btn">
+                <i class="fas fa-play-circle"></i>
+                Commencer le Test
+            </button>
+        </div>
+
+        <!-- Formulaire étudiant -->
+        <div id="studentForm" class="form-container hidden">
+            <h2>Informations de l'Étudiant</h2>
+            <div class="form-group">
+                <label for="studentName">Nom de l'étudiant:</label>
+                <input type="text" id="studentName" class="form-control" placeholder="Entrez votre nom">
+            </div>
+            <div class="form-group">
+                <label for="studentId">Numéro de série:</label>
+                <input type="text" id="studentId" class="form-control" placeholder="Entrez votre numéro de série">
+            </div>
+            <div class="form-group">
+                <label for="studentLevel">Niveau:</label>
+                <select id="studentLevel" class="form-control">
+                    <option value="1apic">1APIC</option>
+                    <option value="2apic">2APIC</option>
+                    <option value="3apic">3APIC</option>
+                </select>
+            </div>
+            <button id="confirmStudentBtn" class="btn">Commencer le Test</button>
+        </div>
+
+        <!-- Connexion professeur -->
+        <div id="teacherLogin" class="form-container hidden">
+            <h2>Connexion Professeur</h2>
+            <div class="form-group">
+                <label for="teacherCode">Code secret:</label>
+                <input type="password" id="teacherCode" class="form-control" placeholder="Entrez le code secret">
+            </div>
+            <button id="confirmTeacherBtn" class="btn">Connexion</button>
+        </div>
+
+        <!-- Panel professeur -->
+        <div id="teacherPanel" class="teacher-panel hidden">
+            <div class="panel-header">
+                <h2>Panneau de Contrôle du Professeur</h2>
+                <button id="logoutTeacherBtn" class="btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </button>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" data-tab="questions">Gestion des Questions</div>
+                <div class="tab" data-tab="results">Résultats des Étudiants</div>
+                <div class="tab" data-tab="newTest">Créer un Nouveau Test</div>
+            </div>
+
+            <div id="questionsTab" class="tab-content active">
+                <h3>Gestion des Questions</h3>
+                <div class="form-group">
+                    <label for="questionLevel">Niveau:</label>
+                    <select id="questionLevel" class="form-control">
+                        <option value="1apic">1APIC</option>
+                        <option value="2apic">2APIC</option>
+                        <option value="3apic">3APIC</option>
+                    </select>
+                </div>
+                <button id="addQuestionBtn" class="btn">Ajouter une Nouvelle Question</button>
+                <div id="questionsList"></div>
+            </div>
+
+            <div id="resultsTab" class="tab-content">
+                <h3>Résultats des Étudiants</h3>
+                <div class="form-group">
+                    <label for="resultsLevel">Niveau:</label>
+                    <select id="resultsLevel" class="form-control">
+                        <option value="all">Tous les niveaux</option>
+                        <option value="1apic">1APIC</option>
+                        <option value="2apic">2APIC</option>
+                        <option value="3apic">3APIC</option>
+                    </select>
+                </div>
+                <div id="resultsList"></div>
+            </div>
+
+            <div id="newTestTab" class="tab-content">
+                <h3>Créer un Nouveau Test</h3>
+                <div class="form-group">
+                    <label for="testLevel">Niveau:</label>
+                    <select id="testLevel" class="form-control">
+                        <option value="1apic">1APIC</option>
+                        <option value="2apic">2APIC</option>
+                        <option value="3apic">3APIC</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="testQuestions">Nombre de questions:</label>
+                    <input type="number" id="testQuestions" class="form-control" value="20" min="1" max="50">
+                </div>
+                <button id="createTestBtn" class="btn">Créer le Test</button>
+            </div>
+        </div>
+
+        <!-- Interface test -->
+        <div id="quizScreen" class="quiz-container hidden">
+            <div id="quizHeader">
+                <h2>Test Hebdomadaire</h2>
+                <div id="quizInfo">
+                    <span id="studentInfo"></span>
+                    <span id="timer">Temps restant: <span id="timeLeft">01:00:00</span></span>
+                </div>
+            </div>
+            
+            <div id="quizQuestions"></div>
+            <div class="navigation">
+                <button id="prevQuestion" class="btn">Précédent</button>
+                <button id="nextQuestion" class="btn">Suivant</button>
+                <button id="submitQuiz" class="btn">Terminer le Test</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup résultat -->
+    <div id="resultPopup" class="result-popup hidden">
+        <div class="result-content">
+            <h2>Résultat du Test</h2>
+            <div id="studentResultInfo"></div>
+            <div class="score" id="finalScore">0/20</div>
+            <p id="resultMessage"></p>
+            <div class="result-actions">
+                <button id="closeResultBtn" class="btn">Retour à la Page d'Accueil</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données de l'application
+        const appData = {
+            currentScreen: 'main',
+            currentLevel: '',
+            currentStudent: '',
+            currentStudentId: '',
+            questions: JSON.parse(localStorage.getItem('questions')) || {},
+            results: JSON.parse(localStorage.getItem('results')) || {},
+            currentTest: [],
+            currentQuestionIndex: 0,
+            studentAnswers: [],
+            timer: null,
+            timeLeft: 3600 // 1 heure en secondes
+        };
+
+        // Initialisation des données si vides
+        if (!appData.questions['1apic']) appData.questions['1apic'] = [];
+        if (!appData.questions['2apic']) appData.questions['2apic'] = [];
+        if (!appData.questions['3apic']) appData.questions['3apic'] = [];
+
+        // Éléments DOM
+        const elements = {
+            mainScreen: document.getElementById('mainScreen'),
+            studentForm: document.getElementById('studentForm'),
+            teacherLogin: document.getElementById('teacherLogin'),
+            teacherPanel: document.getElementById('teacherPanel'),
+            quizScreen: document.getElementById('quizScreen'),
+            teacherBtn: document.getElementById('teacherBtn'),
+            startQuizBtn: document.getElementById('startQuizBtn'),
+            confirmStudentBtn: document.getElementById('confirmStudentBtn'),
+            confirmTeacherBtn: document.getElementById('confirmTeacherBtn'),
+            logoutTeacherBtn: document.getElementById('logoutTeacherBtn'),
+            studentName: document.getElementById('studentName'),
+            studentId: document.getElementById('studentId'),
+            studentLevel: document.getElementById('studentLevel'),
+            teacherCode: document.getElementById('teacherCode'),
+            questionsList: document.getElementById('questionsList'),
+            resultsList: document.getElementById('resultsList'),
+            quizQuestions: document.getElementById('quizQuestions'),
+            studentInfo: document.getElementById('studentInfo'),
+            timeLeft: document.getElementById('timeLeft'),
+            prevQuestion: document.getElementById('prevQuestion'),
+            nextQuestion: document.getElementById('nextQuestion'),
+            submitQuiz: document.getElementById('submitQuiz'),
+            finalScore: document.getElementById('finalScore'),
+            resultMessage: document.getElementById('resultMessage'),
+            addQuestionBtn: document.getElementById('addQuestionBtn'),
+            questionLevel: document.getElementById('questionLevel'),
+            resultsLevel: document.getElementById('resultsLevel'),
+            testLevel: document.getElementById('testLevel'),
+            testQuestions: document.getElementById('testQuestions'),
+            createTestBtn: document.getElementById('createTestBtn'),
+            resultPopup: document.getElementById('resultPopup'),
+            closeResultBtn: document.getElementById('closeResultBtn'),
+            studentResultInfo: document.getElementById('studentResultInfo')
+        };
+
+        // Événements des boutons
+        elements.teacherBtn.addEventListener('click', showTeacherLogin);
+        elements.startQuizBtn.addEventListener('click', showStudentForm);
+        elements.confirmStudentBtn.addEventListener('click', startQuiz);
+        elements.confirmTeacherBtn.addEventListener('click', checkTeacherCode);
+        elements.logoutTeacherBtn.addEventListener('click', logoutTeacher);
+        elements.prevQuestion.addEventListener('click', showPreviousQuestion);
+        elements.nextQuestion.addEventListener('click', showNextQuestion);
+        elements.submitQuiz.addEventListener('click', submitQuiz);
+        elements.addQuestionBtn.addEventListener('click', addNewQuestion);
+        elements.resultsLevel.addEventListener('change', displayResults);
+        elements.createTestBtn.addEventListener('click', createNewTest);
+        elements.questionLevel.addEventListener('change', displayQuestions);
+        elements.closeResultBtn.addEventListener('click', closeResultPopup);
+
+        // Événements des onglets
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab + 'Tab').classList.add('active');
+            });
+        });
+
+        // Fonctions d'affichage
+        function showScreen(screenName) {
+            elements.mainScreen.classList.add('hidden');
+            elements.studentForm.classList.add('hidden');
+            elements.teacherLogin.classList.add('hidden');
+            elements.teacherPanel.classList.add('hidden');
+            elements.quizScreen.classList.add('hidden');
+            
+            switch(screenName) {
+                case 'main':
+                    elements.mainScreen.classList.remove('hidden');
+                    break;
+                case 'studentForm':
+                    elements.studentForm.classList.remove('hidden');
+                    break;
+                case 'teacherLogin':
+                    elements.teacherLogin.classList.remove('hidden');
+                    break;
+                case 'teacherPanel':
+                    elements.teacherPanel.classList.remove('hidden');
+                    displayQuestions();
+                    displayResults();
+                    break;
+                case 'quiz':
+                    elements.quizScreen.classList.remove('hidden');
+                    break;
+            }
+            
+            appData.currentScreen = screenName;
+        }
+
+        function showTeacherLogin() {
+            showScreen('teacherLogin');
+        }
+
+        function showStudentForm() {
+            showScreen('studentForm');
+        }
+
+        function checkTeacherCode() {
+            if (elements.teacherCode.value === '20102020') {
+                showScreen('teacherPanel');
+            } else {
+                alert('Code secret incorrect!');
+            }
+        }
+
+        function logoutTeacher() {
+            showScreen('main');
+            elements.teacherCode.value = '';
+        }
+
+        function startQuiz() {
+            if (!elements.studentName.value) {
+                alert('Veuillez entrer votre nom');
+                return;
+            }
+            
+            if (!elements.studentId.value) {
+                alert('Veuillez entrer votre numéro de série');
+                return;
+            }
+            
+            appData.currentStudent = elements.studentName.value;
+            appData.currentStudentId = elements.studentId.value;
+            appData.currentLevel = elements.studentLevel.value;
+            
+            const availableQuestions = appData.questions[appData.currentLevel];
+            if (availableQuestions.length < 20) {
+                alert('Questions insuffisantes pour ce niveau. Contactez le professeur.');
+                return;
+            }
+            
+            appData.currentTest = [];
+            const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+            appData.currentTest = shuffled.slice(0, 20);
+            
+            appData.studentAnswers = new Array(20).fill(null);
+            appData.currentQuestionIndex = 0;
+            
+            startTimer();
+            
+            showScreen('quiz');
+            displayQuestion();
+            updateStudentInfo();
+        }
+
+        function startTimer() {
+            appData.timeLeft = 3600;
+            updateTimerDisplay();
+            
+            if (appData.timer) clearInterval(appData.timer);
+            
+            appData.timer = setInterval(() => {
+                appData.timeLeft--;
+                updateTimerDisplay();
+                
+                if (appData.timeLeft <= 0) {
+                    clearInterval(appData.timer);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(appData.timeLeft / 3600);
+            const minutes = Math.floor((appData.timeLeft % 3600) / 60);
+            const seconds = appData.timeLeft % 60;
+            elements.timeLeft.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateStudentInfo() {
+            elements.studentInfo.textContent = `Étudiant: ${appData.currentStudent} (${appData.currentStudentId}) | Niveau: ${appData.currentLevel}`;
+        }
+
+        function displayQuestion() {
+            const question = appData.currentTest[appData.currentQuestionIndex];
+            if (!question) return;
+            
+            elements.quizQuestions.innerHTML = `
+                <div class="question">
+                    <div class="question-number">Question ${appData.currentQuestionIndex + 1} sur 20</div>
+                    <div class="question-text">${question.text}</div>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option ${appData.studentAnswers[appData.currentQuestionIndex] === index ? 'selected' : ''}" 
+                                 data-index="${index}">${option}</div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const selectedIndex = parseInt(this.dataset.index);
+                    appData.studentAnswers[appData.currentQuestionIndex] = selectedIndex;
+                    
+                    document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            elements.prevQuestion.disabled = appData.currentQuestionIndex === 0;
+            elements.nextQuestion.disabled = appData.currentQuestionIndex === 19;
+        }
+
+        function showPreviousQuestion() {
+            if (appData.currentQuestionIndex > 0) {
+                appData.currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function showNextQuestion() {
+            if (appData.currentQuestionIndex < 19) {
+                appData.currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            clearInterval(appData.timer);
+            
+            let score = 0;
+            appData.currentTest.forEach((question, index) => {
+                if (appData.studentAnswers[index] === question.correct) {
+                    score++;
+                }
+            });
+            
+            const result = {
+                student: appData.currentStudent,
+                studentId: appData.currentStudentId,
+                level: appData.currentLevel,
+                score: score,
+                total: 20,
+                date: new Date().toLocaleDateString('fr-FR'),
+                time: new Date().toLocaleTimeString('fr-FR'),
+                answers: [...appData.studentAnswers]
+            };
+            
+            if (!appData.results[appData.currentLevel]) {
+                appData.results[appData.currentLevel] = [];
+            }
+            
+            appData.results[appData.currentLevel].push(result);
+            localStorage.setItem('results', JSON.stringify(appData.results));
+            
+            showResultPopup(score);
+        }
+
+        function showResultPopup(score) {
+            elements.finalScore.textContent = `${score}/20`;
+            elements.studentResultInfo.textContent = `Étudiant: ${appData.currentStudent} (${appData.currentStudentId}) | Niveau: ${appData.currentLevel}`;
+            
+            if (score >= 18) {
+                elements.resultMessage.textContent = 'Excellent! Performance remarquable.';
+            } else if (score >= 15) {
+                elements.resultMessage.textContent = 'Très bien! Continuez vos efforts.';
+            } else if (score >= 10) {
+                elements.resultMessage.textContent = 'Satisfaisant, mais vous pouvez améliorer votre performance.';
+            } else {
+                elements.resultMessage.textContent = 'Nécessite plus d\'efforts et d\'étude.';
+            }
+            
+            elements.resultPopup.classList.remove('hidden');
+        }
+
+        function closeResultPopup() {
+            elements.studentName.value = '';
+            elements.studentId.value = '';
+            elements.studentLevel.value = '1apic';
+            
+            elements.resultPopup.classList.add('hidden');
+            showScreen('main');
+        }
+
+        // Fonctions panel professeur
+        function displayQuestions() {
+            const level = elements.questionLevel.value;
+            const questions = appData.questions[level] || [];
+            
+            elements.questionsList.innerHTML = '';
+            
+            if (questions.length === 0) {
+                elements.questionsList.innerHTML = '<p>Aucune question pour ce niveau.</p>';
+                return;
+            }
+            
+            questions.forEach((question, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question-item';
+                questionElement.innerHTML = `
+                    <div class="question-content">
+                        <strong>${index + 1}. ${question.text}</strong>
+                        <div class="options-list">
+                            ${question.options.map((option, optIndex) => `
+                                <div>${String.fromCharCode(65 + optIndex)}) ${option} ${optIndex === question.correct ? '✓' : ''}</div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-sm edit-question" data-index="${index}">Modifier</button>
+                        <button class="btn btn-sm delete-question" data-index="${index}">Supprimer</button>
+                    </div>
+                `;
+                
+                elements.questionsList.appendChild(questionElement);
+            });
+            
+            document.querySelectorAll('.delete-question').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    deleteQuestion(level, index);
+                });
+            });
+            
+            document.querySelectorAll('.edit-question').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    editQuestion(level, index);
+                });
+            });
+        }
+
+        function addNewQuestion() {
+            const level = elements.questionLevel.value;
+            const text = prompt('Entrez le texte de la question:');
+            if (!text) return;
+            
+            const options = [];
+            for (let i = 0; i < 3; i++) {
+                const option = prompt(`Entrez l'option ${i + 1}:`);
+                if (!option) return;
+                options.push(option);
+            }
+            
+            const correct = parseInt(prompt('Entrez le numéro de la réponse correcte (1, 2, ou 3):')) - 1;
+            if (isNaN(correct) || correct < 0 || correct > 2) {
+                alert('Numéro de réponse correcte incorrect!');
+                return;
+            }
+            
+            const newQuestion = {
+                text: text,
+                options: options,
+                correct: correct
+            };
+            
+            appData.questions[level].push(newQuestion);
+            localStorage.setItem('questions', JSON.stringify(appData.questions));
+            displayQuestions();
+            alert('Question ajoutée avec succès!');
+        }
+
+        function deleteQuestion(level, index) {
+            if (confirm('Êtes-vous sûr de supprimer cette question?')) {
+                appData.questions[level].splice(index, 1);
+                localStorage.setItem('questions', JSON.stringify(appData.questions));
+                displayQuestions();
+            }
+        }
+
+        function editQuestion(level, index) {
+            const question = appData.questions[level][index];
+            
+            const newText = prompt('Nouveau texte de la question:', question.text);
+            if (!newText) return;
+            
+            const newOptions = [];
+            for (let i = 0; i < 3; i++) {
+                const option = prompt(`Nouvelle option ${i + 1}:`, question.options[i]);
+                if (!option) return;
+                newOptions.push(option);
+            }
+            
+            const newCorrect = parseInt(prompt('Nouveau numéro de réponse correcte (1, 2, ou 3):', question.correct + 1)) - 1;
+            if (isNaN(newCorrect) || newCorrect < 0 || newCorrect > 2) {
+                alert('Numéro de réponse correcte incorrect!');
+                return;
+            }
+            
+            question.text = newText;
+            question.options = newOptions;
+            question.correct = newCorrect;
+            
+            localStorage.setItem('questions', JSON.stringify(appData.questions));
+            displayQuestions();
+            alert('Question modifiée avec succès!');
+        }
+
+        function displayResults() {
+            const level = elements.resultsLevel.value;
+            let results = [];
+            
+            if (level === 'all') {
+                results = [...(appData.results['1apic'] || []), 
+                          ...(appData.results['2apic'] || []), 
+                          ...(appData.results['3apic'] || [])];
+            } else {
+                results = appData.results[level] || [];
+            }
+            
+            elements.resultsList.innerHTML = '';
+            
+            if (results.length === 0) {
+                elements.resultsList.innerHTML = '<p>Aucun résultat.</p>';
+                return;
+            }
+            
+            results.sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
+            
+            results.forEach((result, index) => {
+                const resultElement = document.createElement('div');
+                resultElement.className = 'result-item';
+                resultElement.innerHTML = `
+                    <div class="result-info">
+                        <strong>${result.student} (${result.studentId})</strong> - ${result.level}
+                        <div>Résultat: ${result.score}/${result.total} - ${result.date} ${result.time}</div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-sm view-details" data-index="${index}" data-level="${result.level}">Détails</button>
+                        <button class="btn btn-sm delete-result" data-index="${index}" data-level="${result.level}">Supprimer</button>
+                    </div>
+                `;
+                
+                elements.resultsList.appendChild(resultElement);
+            });
+            
+            document.querySelectorAll('.view-details').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    const level = this.dataset.level;
+                    viewResultDetails(level, index);
+                });
+            });
+            
+            document.querySelectorAll('.delete-result').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    const level = this.dataset.level;
+                    deleteResult(level, index);
+                });
+            });
+        }
+
+        function viewResultDetails(level, index) {
+            const result = appData.results[level][index];
+            let details = `Étudiant: ${result.student}\nNuméro de série: ${result.studentId}\nNiveau: ${result.level}\nRésultat: ${result.score}/${result.total}\nDate: ${result.date} ${result.time}\n\n`;
+            
+            const questions = appData.questions[level];
+            result.answers.forEach((answer, qIndex) => {
+                if (qIndex < questions.length) {
+                    const question = questions[qIndex];
+                    const isCorrect = answer === question.correct;
+                    details += `Q ${qIndex + 1}: ${isCorrect ? '✓' : '✗'}\n`;
+                    details += `Votre réponse: ${answer !== null ? question.options[answer] : 'Non répondue'}\n`;
+                    details += `Réponse correcte: ${question.options[question.correct]}\n\n`;
+                }
+            });
+            
+            alert(details);
+        }
+
+        function deleteResult(level, index) {
+            if (confirm('Êtes-vous sûr de supprimer ce résultat?')) {
+                appData.results[level].splice(index, 1);
+                localStorage.setItem('results', JSON.stringify(appData.results));
+                displayResults();
+            }
+        }
+
+        function createNewTest() {
+            const level = elements.testLevel.value;
+            const count = parseInt(elements.testQuestions.value);
+            
+            if (appData.questions[level].length < count) {
+                alert(`Questions insuffisantes. Seulement ${appData.questions[level].length} questions disponibles.`);
+                return;
+            }
+            
+            alert(`Nouveau test créé pour le niveau ${level} contenant ${count} questions.`);
+        }
+
+        // Initialisation
+        function initApp() {
+            showScreen('main');
+            
+            if (appData.questions['1apic'].length === 0) {
+                appData.questions['1apic'] = [
+                    {
+                        text: "Quel est le résultat de 5 + 7?",
+                        options: ["10", "11", "12"],
+                        correct: 2
+                    },
+                    {
+                        text: "Quel animal est connu comme 'le vaisseau du désert'?",
+                        options: ["Le cheval", "Le chameau", "L'éléphant"],
+                        correct: 1
+                    }
+                ];
+                localStorage.setItem('questions', JSON.stringify(appData.questions));
+            }
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
